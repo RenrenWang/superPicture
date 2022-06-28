@@ -6,7 +6,7 @@ export default (app: any) => {
       type: String,
     },
     content: {
-      type: Text,
+      type: String,
     },
     keywords: {
       type: [],
