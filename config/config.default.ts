@@ -22,6 +22,11 @@ export default (appInfo: EggAppInfo) => {
       poolSize: 40,
     },
   };
+  config.security = {
+    csrf: {
+      enable: false,
+    },
+  };
   return {
     ...config,
     ...bizConfig,

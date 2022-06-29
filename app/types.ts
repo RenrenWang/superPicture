@@ -1,10 +1,10 @@
 export type ArticleType = {
   title: string;
   content: string;
-  keywords: [string];
+  keywords: [];
   describe: string;
-  imgs: [string];
-  create_time: Date;
+  imgs: [];
+  create_time?: Date;
 };
 export type ImgType = {
   img_url: {
