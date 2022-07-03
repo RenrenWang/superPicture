@@ -1,5 +1,5 @@
 import BaseController from "./baseController";
-
+import { ArticleType } from "../types";
 export default class ArticleController extends BaseController {
   createRule: any = {
     title: { type: "string", required: true },
@@ -66,6 +66,73 @@ export default class ArticleController extends BaseController {
     });
     ctx.body = this.resultSuccessMessage({
       code: 200,
+      data: result,
+    });
+  }
+  async delete() {
+    const { ctx } = this;
+    const data = ctx.request.body;
+    const id = data?.id;
+    if (!id) {
+      return (ctx.body = this.resultErrorMessage({
+        message: ctx.__("missing field id"),
+      }));
+    }
+    const result = await this.ctx.service.article.delete(id);
+    if (!result) {
+      return (ctx.body = this.resultErrorMessage({
+        message: ctx.__("fail"),
+      }));
+    }
+    ctx.body = this.resultSuccessMessage({
+      code: 200,
+      message: ctx.__("success"),
+      data: result,
+    });
+  }
+  async update() {
+    const { ctx } = this;
+    const data = ctx.request.body;
+    if (!data?.id) {
+      return (ctx.body = this.resultErrorMessage({
+        message: ctx.__("missing field id"),
+      }));
+    }
+    if (data?.status != null && (data?.status !== 0 || data?.status !== 1)) {
+      return (ctx.body = this.resultErrorMessage({
+        message: ctx.__("invalid field status"),
+      }));
+    }
+    const { id, status, title, describe, content, imgs, keywords } = data;
+    const saveData: ArticleType = { id };
+    if (status === 0 || status === 1) {
+      saveData.status = status;
+    }
+    if (title) {
+      saveData.title = title;
+    }
+    if (describe) {
+      saveData.describe = describe;
+    }
+    if (content) {
+      saveData.content = content;
+    }
+    if (imgs) {
+      saveData.imgs = imgs;
+    }
+    if (keywords) {
+      saveData.keywords = keywords;
+    }
+    const keys = Object.keys(saveData);
+    if (keys.length <= 1) {
+      return (ctx.body = this.resultErrorMessage({
+        message: ctx.__("not  field update"),
+      }));
+    }
+    const result = await this.ctx.service.article.update(saveData);
+    ctx.body = this.resultSuccessMessage({
+      code: 200,
+      message: ctx.__("success"),
       data: result,
     });
   }

@@ -7,9 +7,6 @@ type PageType = {
   filter?: object;
 };
 export default class Article extends Service {
-  public async find() {
-    return this.ctx.model.Article.find();
-  }
   public async findAll({ page = 1, pageSize = 5, filter = {} }: PageType) {
     const skip = calcPagingOffset(page, pageSize);
     const count = await this.count();
@@ -58,7 +55,7 @@ export default class Article extends Service {
     return this.ctx.model.Article.create(post);
   }
   public async delete(id: string) {
-    return this.ctx.model.Article.deleteOne({ id });
+    return this.ctx.model.Article.deleteOne({ _id: id });
   }
   public async update(post: ArticleType) {
     return this.ctx.model.Article.updateOne(post);
