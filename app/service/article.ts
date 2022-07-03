@@ -1,8 +1,58 @@
 import { Service } from "egg";
 import { ArticleType } from "../types";
+import { calcPagingOffset } from "../util";
+type PageType = {
+  page: number;
+  pageSize: number;
+  filter?: object;
+};
 export default class Article extends Service {
   public async find() {
     return this.ctx.model.Article.find();
+  }
+  public async findAll({ page = 1, pageSize = 5, filter = {} }: PageType) {
+    const skip = calcPagingOffset(page, pageSize);
+    const count = await this.count();
+    const countPage = Math.ceil(count / pageSize);
+    if (page > countPage) {
+      return {
+        page,
+        pageSize,
+        countPage,
+        list: [],
+        count,
+      };
+    }
+    const list = await this.ctx.model.Article.find(filter, {
+      keywords: 1,
+      imgs: 1,
+      create_time: 1,
+      coverImg: 1,
+      title: 1,
+      content: 1,
+      describe: 1,
+      _id: 0,
+      id: "$_id",
+      status: 1,
+    })
+      .skip(skip)
+      .limit(pageSize);
+
+    return {
+      page,
+      pageSize,
+      list,
+      count,
+      lastPage: page === countPage,
+      countPage,
+    };
+  }
+  public async count(filter: object = {}) {
+    return this.ctx.model.Article.find(filter).count();
+  }
+  public async findByTitle(title: string) {
+    const data = this.ctx.model.Article.find({ title });
+    return data;
   }
   public async create(post: ArticleType) {
     return this.ctx.model.Article.create(post);

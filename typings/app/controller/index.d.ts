@@ -3,13 +3,13 @@
 
 import 'egg';
 import ExportArticle from '../../../app/controller/article';
+import ExportBaseController from '../../../app/controller/baseController';
 import ExportHome from '../../../app/controller/home';
-import ExportImg from '../../../app/controller/img';
 
 declare module 'egg' {
   interface IController {
     article: ExportArticle;
+    baseController: ExportBaseController;
     home: ExportHome;
-    img: ExportImg;
   }
 }

@@ -1,0 +1,11 @@
+{
+  "should not be empty": "不能为空",
+  "invalid": "无效",
+  "required": "缺少参数",
+  "missing_field": "缺少字段",
+  "already exists": "已存在",
+  "length should bigger than": "长度大于",
+  "should be an": "必须是",
+  "success": "成功",
+  "fail": "失败"
+}

@@ -1,0 +1,9 @@
+{
+  "should not be empty": "should not be empty",
+  "invalid": "invalid",
+  "required": "required",
+  "missing_field": "missing_field",
+  "already exists": "already exists",
+  "success": "success",
+  "fail": "fail"
+}

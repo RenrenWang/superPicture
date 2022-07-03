@@ -5,6 +5,7 @@ export type ArticleType = {
   describe: string;
   imgs: [];
   create_time?: Date;
+  id?: string;
 };
 export type ImgType = {
   img_url: {

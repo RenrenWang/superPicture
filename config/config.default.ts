@@ -1,4 +1,12 @@
 import { EggAppConfig, EggAppInfo, PowerPartial } from "egg";
+// import i18n from "i18n";
+// import path from "path";
+// i18n.configure({
+//   locales: ["zh", "en"],
+//   directory: path.join(__dirname, "/locales"),
+// });
+const lang = "zh";
+// i18n.setLocale(lang);
 
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;
@@ -27,6 +35,14 @@ export default (appInfo: EggAppInfo) => {
       enable: false,
     },
   };
+
+  // config.validate = {
+  //   translate,
+  // };
+  config.i18n = {
+    defaultLocale: lang,
+  };
+
   return {
     ...config,
     ...bizConfig,
