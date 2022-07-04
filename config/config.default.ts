@@ -16,7 +16,7 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + "_1656343906290_1854";
 
   // add your egg config in here
-  config.middleware = [];
+  config.middleware = [ "notfoundHandler" ];
 
   // add your special config in here
   const bizConfig = {
@@ -36,9 +36,6 @@ export default (appInfo: EggAppInfo) => {
     },
   };
 
-  // config.validate = {
-  //   translate,
-  // };
   config.i18n = {
     defaultLocale: lang,
   };

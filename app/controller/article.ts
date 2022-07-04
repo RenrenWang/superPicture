@@ -130,16 +130,25 @@ export default class ArticleController extends BaseController {
         message: ctx.__("not  field update"),
       }));
     }
-    const result = await this.ctx.service.article.update(saveData);
-    if (!result) {
+    try {
+      const result = await this.ctx.service.article.update(saveData);
+      if (!result) {
+        return (ctx.body = this.resultErrorMessage({
+          message: ctx.__("fail"),
+        }));
+      }
+      ctx.body = this.resultSuccessMessage({
+        code: 200,
+        message: ctx.__("success"),
+        data: result,
+      });
+    } catch (error) {
+      this.logger.warn(error);
       return (ctx.body = this.resultErrorMessage({
         message: ctx.__("fail"),
       }));
     }
-    ctx.body = this.resultSuccessMessage({
-      code: 200,
-      message: ctx.__("success"),
-    });
+
   }
   async findById() {
     const { ctx } = this;
@@ -154,16 +163,25 @@ export default class ArticleController extends BaseController {
         message: ctx.__("id not a string"),
       }));
     }
-    const result = await this.ctx.service.article.findById(data?.id);
-    if (!result) {
-      return (ctx.body = this.resultErrorMessage({
-        message: ctx.__("not found data"),
-      }));
+    try {
+      const result = await this.ctx.service.article.findById(data?.id);
+      if (!result) {
+        return (ctx.body = this.resultErrorMessage({
+          message: ctx.__("not found data"),
+        }));
+      }
+      ctx.body = this.resultSuccessMessage({
+        code: 200,
+        message: ctx.__("success"),
+        data: result,
+      });
+    } catch (error) {
+      this.logger.warn(error);
+      ctx.body = this.resultSuccessMessage({
+        code: 200,
+        message: ctx.__("fail"),
+      });
     }
-    ctx.body = this.resultSuccessMessage({
-      code: 200,
-      message: ctx.__("success"),
-      data: result,
-    });
+
   }
 }

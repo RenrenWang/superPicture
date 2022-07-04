@@ -23,7 +23,7 @@ export default class Article extends Service {
   }
   public async findAll({ page = 1, pageSize = 5, filter = {} }: PageType) {
     const skip = calcPagingOffset(page, pageSize);
-    const count = await this.count();
+    const count = await this.count(filter);
     const countPage = Math.ceil(count / pageSize);
     if (page > countPage) {
       return {
@@ -72,7 +72,10 @@ export default class Article extends Service {
     return this.ctx.model.Article.deleteOne({ _id: id });
   }
   public async update(post: ArticleType) {
-    const result = await this.ctx.model.Article.updateOne(post);
+    const result = await this.ctx.model.Article.updateOne({
+      ...post,
+      _id: post?.id,
+    });
     return result?.ok;
   }
 }
