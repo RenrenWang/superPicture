@@ -7,5 +7,6 @@ export default (app: Application) => {
   router.post("/api/article", controller.article.update);
 
   router.get("/api/article/list", controller.article.findList);
+  router.get("/api/article/findById", controller.article.findById);
   router.get("/", controller.home.index);
 };

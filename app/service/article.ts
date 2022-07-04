@@ -7,6 +7,20 @@ type PageType = {
   filter?: object;
 };
 export default class Article extends Service {
+  public async findById(id: string) {
+    return await this.ctx.model.Article.findOne({ _id: id }, {
+      keywords: 1,
+      imgs: 1,
+      create_time: 1,
+      coverImg: 1,
+      title: 1,
+      content: 1,
+      describe: 1,
+      _id: 0,
+      id: "$_id",
+      status: 1,
+    });
+  }
   public async findAll({ page = 1, pageSize = 5, filter = {} }: PageType) {
     const skip = calcPagingOffset(page, pageSize);
     const count = await this.count();
@@ -58,6 +72,7 @@ export default class Article extends Service {
     return this.ctx.model.Article.deleteOne({ _id: id });
   }
   public async update(post: ArticleType) {
-    return this.ctx.model.Article.updateOne(post);
+    const result = await this.ctx.model.Article.updateOne(post);
+    return result?.ok;
   }
 }

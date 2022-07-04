@@ -12,7 +12,7 @@ export default class ArticleController extends BaseController {
     describe: { type: "string", required: true },
     imgs: { type: "array", required: true, min: 1 },
     coverImg: { type: "string", required: true },
-    status: { type: "enum", required: true, values: [1, 0] },
+    status: { type: "enum", required: true, values: [ 1, 0 ] },
   };
   async create() {
     const { ctx, app } = this;
@@ -51,7 +51,7 @@ export default class ArticleController extends BaseController {
         pageSize: { type: "integer", required: true },
         filter: { type: "object", required: false, default: {} },
       },
-      params
+      params,
     );
     if (errors) {
       return (ctx.body = this.resultErrorMessage({
@@ -123,6 +123,7 @@ export default class ArticleController extends BaseController {
     if (keywords) {
       saveData.keywords = keywords;
     }
+
     const keys = Object.keys(saveData);
     if (keys.length <= 1) {
       return (ctx.body = this.resultErrorMessage({
@@ -130,6 +131,35 @@ export default class ArticleController extends BaseController {
       }));
     }
     const result = await this.ctx.service.article.update(saveData);
+    if (!result) {
+      return (ctx.body = this.resultErrorMessage({
+        message: ctx.__("fail"),
+      }));
+    }
+    ctx.body = this.resultSuccessMessage({
+      code: 200,
+      message: ctx.__("success"),
+    });
+  }
+  async findById() {
+    const { ctx } = this;
+    const data = ctx.request.body;
+    if (!data?.id) {
+      return (ctx.body = this.resultErrorMessage({
+        message: ctx.__("missing field id"),
+      }));
+    }
+    if (typeof data?.id !== "string") {
+      return (ctx.body = this.resultErrorMessage({
+        message: ctx.__("id not a string"),
+      }));
+    }
+    const result = await this.ctx.service.article.findById(data?.id);
+    if (!result) {
+      return (ctx.body = this.resultErrorMessage({
+        message: ctx.__("not found data"),
+      }));
+    }
     ctx.body = this.resultSuccessMessage({
       code: 200,
       message: ctx.__("success"),
