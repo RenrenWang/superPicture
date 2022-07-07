@@ -39,7 +39,9 @@ export default (appInfo: EggAppInfo) => {
   config.i18n = {
     defaultLocale: lang,
   };
-
+  config.validate = {
+    convert: true,
+  };
   return {
     ...config,
     ...bizConfig,

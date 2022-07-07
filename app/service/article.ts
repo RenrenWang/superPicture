@@ -4,7 +4,7 @@ import { calcPagingOffset } from "../util";
 type PageType = {
   page: number;
   pageSize: number;
-  filter?: object;
+  filter?: any;
 };
 export default class Article extends Service {
   public async findById(id: string) {

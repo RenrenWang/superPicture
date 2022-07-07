@@ -44,11 +44,11 @@ export default class ArticleController extends BaseController {
   }
   async findList() {
     const { ctx, app } = this;
-    const params = ctx.request.body;
+    const params = ctx.query;
     const errors = app.validator.validate(
       {
-        page: { type: "integer", required: true },
-        pageSize: { type: "integer", required: true },
+        page: { type: "number", default: 1, required: false },
+        pageSize: { type: "number", default: 10, required: false },
         filter: { type: "object", required: false, default: {} },
       },
       params,
@@ -60,8 +60,8 @@ export default class ArticleController extends BaseController {
     }
     const { page, pageSize, filter } = params;
     const result = await ctx.service.article.findAll({
-      page,
-      pageSize,
+      page: Number(page),
+      pageSize: Number(pageSize),
       filter,
     });
     ctx.body = this.resultSuccessMessage({
